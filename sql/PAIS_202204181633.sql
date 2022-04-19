@@ -1,0 +1,6 @@
+INSERT INTO PAIS (Id,Nome) VALUES
+	 (1058,'BRASIL'),
+	 (1600,'CHINA'),
+	 (1601,'PAQUISTAO'),
+	 (99,'EX'),
+	 (5860,'PARAGUAI');
