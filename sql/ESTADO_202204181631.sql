@@ -1,3 +1,18 @@
+CREATE TABLE Estado(
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Uf VARCHAR(255),
+    Nome VARCHAR(255),
+    PaisId INTEGER,
+    PercICMS REAL,
+    CodigoFiscal VARCHAR(255),
+    UtilizaPAF VARCHAR(255),
+    PerfilPACEF VARCHAR(255),
+    Replicar VARCHAR(255),
+    ModoenvioNFE VARCHAR(255),
+    ResolucaocTEGlobalizado VARCHAR(255),
+    FOREIGN KEY (PaisId) REFERENCES Pais(Id)
+);
+
 INSERT INTO ESTADO (Id,Uf,Nome,PaisId,PercICMS,CodigoFiscal,UtilizaPAF,PerfilPACEF,Replicar,ModoenvioNFE,ResolucaocTEGlobalizado) VALUES
 	 (10,'AB','AMAMBAY',5860,4.00,NULL,'N',NULL,'N','0',NULL),
 	 (12,'AC','ACRE',1058,7.00,'12','N',NULL,'N','1',NULL),

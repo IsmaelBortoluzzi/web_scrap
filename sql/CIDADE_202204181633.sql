@@ -1,3 +1,20 @@
+CREATE TABLE Cidade(
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Nome VARCHAR(255),
+    CodigoFiscal VARCHAR(255),
+    Populacao INTEGER DEFAULT 0,
+    Obs VARCHAR(255),
+    RegiaoVenda VARCHAR(255),
+    CEP VARCHAR(8),
+    ComissaoEntrega REAL DEFAULT 0.0,
+    EstadoId INTEGER,
+    Latitude VARCHAR(15),
+    Longitude VARCHAR(15),
+    ValorFreteAdicional REAL DEFAULT 0.0,
+    Replicar VARCHAR(255),
+    FOREIGN KEY(EstadoId) REFERENCES Estado(Id)
+);
+
 INSERT INTO CIDADE (Id,Nome,CodigoFiscal,Populacao,Obs,RegiaoVenda,CEP,ComissaoEntrega,EstadoId,Latitude,Longitude,ValorFreteAdicional,Replicar) VALUES
 	 (1200013,'ACRELANDIA','1200013',1,'OK','S','',0.00,12,NULL,NULL,0.00,'N'),
 	 (1200054,'ASSIS BRASIL','1200054',1,'OK','S','',0.00,12,NULL,NULL,0.00,'N'),
