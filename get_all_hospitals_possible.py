@@ -16,21 +16,45 @@ sql_insertion = """
 
 values_to_insert = """"""
 counter = 0
+flag = False
 
 for city, state in sql_select:
 
+    if city == 'jundiai' and state == 'sp':
+        flag = True
+
+    counter += 1
+    print(counter)
+
+    if not flag:
+        continue
+
+    url = session = response = None
     try:
         url = f'https://www.cidadesdomeubrasil.com.br/{state}/{city}/hospitais'
         session = HTMLSession()
         response = session.get(url, allow_redirects=False)
+
     except ChunkedEncodingError as e:
-        print('Deu aquele ChunkedEncodingError')
-        continue
+        print('Deu aquele ChunkedEncodingError, vamo tentar de volta')
+        try:
+            url = f'https://www.cidadesdomeubrasil.com.br/{state}/{city}/hospitais'
+            session = HTMLSession()
+            response = session.get(url, allow_redirects=False)
+        except:
+            print('Não deu :/')
+            with open('not_200_statuscode.txt', 'a') as file:
+                file.write(f'{counter}: {city} - {state}, status code: {response.status_code}\n')
+            continue
+
     except Exception as ex:
         print(ex)
         continue
 
     if response.status_code != 200:
+        print('ops!', response.status_code)
+        with open('not_200_statuscode.txt', 'a') as file:
+            file.write(f'{counter}: {city} - {state}, status code: {response.status_code}\n')
         continue
 
     medical_units = response.html.find('#no-more-tables', first=True)
@@ -54,13 +78,24 @@ for city, state in sql_select:
         formatted_city_name = city.replace('_', ' ').upper()
         formatted_uf_name = state.upper()
         row_values += f"'{formatted_city_name}','{formatted_uf_name}'),"
-        values_to_insert += row_values
+        # values_to_insert += row_values
+        try:
+            cursor.execute(sql_insertion % row_values[:-1] + ';')
+        except sqlite3.OperationalError:
+            continue
 
-    cursor.execute(sql_insertion % values_to_insert[:-1] + ';')
-    counter += 1
-    print(counter)
+    connection.commit()
+
+    # try:
+    #     cursor.execute(sql_insertion % values_to_insert[:-1] + ';')
+    #     connection.commit()
+    # except sqlite3.OperationalError:
+    #     with open('cidades_com_OperationalError.txt', 'a') as file:
+    #         file.write(f'{counter}: {city} - {state}, verificar individualmente: {response.status_code}\n')
+    #     continue
+
+
 
 # values_to_insert = values_to_insert[:-1] + ';'
 
-connection.commit()
 connection.close()

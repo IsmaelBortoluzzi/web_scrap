@@ -1,7 +1,7 @@
-import sqlite3
 from requests_html import HTML, HTMLSession
+import sqlite3
 
-connection = sqlite3.connect('unidades_medicas.db')
+connection = sqlite3.connect('/media/dev2/5E8D11D5735BC2C8/the_db/unidades_medicas.db')
 cursor = connection.cursor()
 
 # cursor.execute("""DROP TABLE ListaPossiveisClientes""")
