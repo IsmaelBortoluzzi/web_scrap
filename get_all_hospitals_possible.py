@@ -20,14 +20,8 @@ flag = False
 
 for city, state in sql_select:
 
-    if city == 'jundiai' and state == 'sp':
-        flag = True
-
     counter += 1
     print(counter)
-
-    if not flag:
-        continue
 
     url = session = response = None
     try:
@@ -85,17 +79,5 @@ for city, state in sql_select:
             continue
 
     connection.commit()
-
-    # try:
-    #     cursor.execute(sql_insertion % values_to_insert[:-1] + ';')
-    #     connection.commit()
-    # except sqlite3.OperationalError:
-    #     with open('cidades_com_OperationalError.txt', 'a') as file:
-    #         file.write(f'{counter}: {city} - {state}, verificar individualmente: {response.status_code}\n')
-    #     continue
-
-
-
-# values_to_insert = values_to_insert[:-1] + ';'
 
 connection.close()
